@@ -16,10 +16,16 @@ RUN apt-get update && apt-get install -y \
 	ninja-build \
 	pkg-config \
 	qtbase5-dev \
- && rm -rf /var/lib/apt/lists/*
+&& rm -rf /var/lib/apt/lists/* \
+&& update-alternatives --set c++ /usr/bin/clang++ \
+&& update-alternatives --set cc /usr/bin/clang
 
- # Manually build other sources
- RUN mkdir -p /usr/src/things \
-    && curl -SL http://example.com/big.tar.xz \
-    | tar -xJC /usr/src/things \
-    && make -C /usr/src/things all
+# Manually build other sources
+COPY vc-deps/ /vc-deps/
+RUN cd /vc-deps/ \
+	&& ./build-deps.sh -system -cmake\
+	&& cd / \
+	&& rm -rf /vc-deps/ /root/.cache/fetchurl/
+
+# Start an interactive shell
+CMD ["/bin/bash"]
