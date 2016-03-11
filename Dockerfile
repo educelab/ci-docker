@@ -2,6 +2,7 @@ FROM debian:8
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
+COPY vc-deps/ /vc-deps/
 RUN apt-get update && apt-get install -y \
 	build-essential \
 	clang \
@@ -18,14 +19,11 @@ RUN apt-get update && apt-get install -y \
 	qtbase5-dev \
 && rm -rf /var/lib/apt/lists/* \
 && update-alternatives --set c++ /usr/bin/clang++ \
-&& update-alternatives --set cc /usr/bin/clang
-
-# Manually build other sources
-COPY vc-deps/ /vc-deps/
-RUN cd /vc-deps/ \
-	&& ./build-deps.sh -system -cmake\
-	&& cd / \
-	&& rm -rf /vc-deps/ /root/.cache/fetchurl/
+&& update-alternatives --set cc /usr/bin/clang \
+&& cd /vc-deps/ \
+&& ./build-deps.sh -system -cmake\
+&& cd / \
+&& rm -rf /vc-deps/ /root/.cache/fetchurl/
 
 # Start an interactive shell
 CMD ["/bin/bash"]
