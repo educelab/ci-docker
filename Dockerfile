@@ -3,7 +3,7 @@ MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
 COPY vc-deps/ /vc-deps/
-RUN apt-get update && apt-get install -y \
+RUN apt-get clean && apt-get update && apt-get install --fix-missing -y \
 	build-essential \
 	clang \
 	curl \
