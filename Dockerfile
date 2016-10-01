@@ -23,8 +23,10 @@ RUN apt-get clean && apt-get update && apt-get install --fix-missing -y \
 && rm -rf /var/lib/apt/lists/* \
 && update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.8 100 \
 && update-alternatives --set cc /usr/bin/clang-3.8 \
+&& ln -s /usr/bin/clang-3.8 /usr/bin/clang \
 && update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100 \
 && update-alternatives --set c++ /usr/bin/clang++-3.8 \
+&& ln -s /usr/bin/clang++-3.8 /usr/bin/clang++ \
 && ln -s /usr/bin/clang-format-3.8 /usr/bin/clang-format \
 && cd /vc-deps/ \
 && ./build-deps.sh -system -cmake\
