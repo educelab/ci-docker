@@ -3,7 +3,7 @@ MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
 COPY vc-deps/ /vc-deps/
-RUN apt-get clean && apt-get update && apt-get install --fix-missing -y \
+RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-broken -y \
 	build-essential \
 	clang-3.8 \
 	clang-format-3.8 \
