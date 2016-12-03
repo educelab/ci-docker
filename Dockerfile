@@ -4,6 +4,12 @@ MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 # Install apt sources
 COPY vc-deps/ /vc-deps/
 RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-broken -y \
+    binutils \
+    libgc1c2 \
+    libgcc-6-dev \
+    libobjc-6-dev \
+    libobjc4 \
+    libstdc++-6-dev \
     bzip2 \
     xz-utils \
     curl \
@@ -25,6 +31,10 @@ RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-br
 && tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
 && ln -s $(which clang) /usr/local/bin/cc \
 && ln -s $(which clang++) /usr/local/bin/c++ \
+&& update-alternatives --install /usr/bin/cc cc $(which clang) 100 \
+&& update-alternatives --set cc $(which clang) \
+&& update-alternatives --install /usr/bin/c++ c++ $(which clang++) 100 \
+&& update-alternatives --set c++ $(which clang++) \
 && cd /vc-deps/ \
 && ./build-deps.sh -system -cmake\
 && cd / \
