@@ -5,8 +5,7 @@ MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 COPY vc-deps/ /vc-deps/
 RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-broken -y \
     bzip2 \
-    clang-3.8 \
-    clang-format-3.8 \
+    xz-utils \
     curl \
     git \
     libbz2-dev \
@@ -22,17 +21,14 @@ RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-br
     python3 \
     qtbase5-dev \
 && rm -rf /var/lib/apt/lists/* \
-&& update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.8 100 \
-&& update-alternatives --set cc /usr/bin/clang-3.8 \
-&& ln -s /usr/bin/clang-3.8 /usr/bin/clang \
-&& update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.8 100 \
-&& update-alternatives --set c++ /usr/bin/clang++-3.8 \
-&& ln -s /usr/bin/clang++-3.8 /usr/bin/clang++ \
-&& ln -s /usr/bin/clang-format-3.8 /usr/bin/clang-format \
+&& curl -o llvm.tar.xz http://llvm.org/releases/3.9.0/clang+llvm-3.9.0-x86_64-linux-gnu-debian8.tar.xz \
+&& tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
+&& ln -s $(which clang) /usr/local/bin/cc \
+&& ln -s $(which clang++) /usr/local/bin/c++ \
 && cd /vc-deps/ \
 && ./build-deps.sh -system -cmake\
 && cd / \
-&& rm -rf /vc-deps/ /root/.cache/fetchurl/
+&& rm -rf /vc-deps/ /root/.cache/fetchurl/ /llvm.tar.xz
 
 # Start an interactive shell
 CMD ["/bin/bash"]
