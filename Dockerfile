@@ -27,7 +27,7 @@ RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-br
     python3 \
     qtbase5-dev \
 && rm -rf /var/lib/apt/lists/* \
-&& curl -o llvm.tar.xz http://releases.llvm.org/3.9.1/clang+llvm-3.9.1-x86_64-linux-gnu-debian8.tar.xz \
+&& curl -o llvm.tar.xz http://releases.llvm.org/3.9.0/clang+llvm-3.9.0-x86_64-linux-gnu-debian8.tar.xz \
 && tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
 && ln -s $(which clang) /usr/local/bin/cc \
 && ln -s $(which clang++) /usr/local/bin/c++ \
