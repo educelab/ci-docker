@@ -3,7 +3,9 @@ MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
 COPY vc-deps/ /vc-deps/
-RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-broken -y \
+RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
+&& apt-get clean && apt-get -y update
+RUN apt-get install --fix-missing --fix-broken -y \
     binutils \
     libgc1c2 \
     libgcc-6-dev \
@@ -25,20 +27,25 @@ RUN apt-get clean && apt-get -y update && apt-get install --fix-missing --fix-br
     ninja-build \
     pkg-config \
     python3 \
+    qt5-default \
     qtbase5-dev \
-&& rm -rf /var/lib/apt/lists/* \
-&& curl -o llvm.tar.xz http://releases.llvm.org/5.0.0/clang+llvm-5.0.0-x86_64-linux-gnu-debian8.tar.xz \
+&& apt-get -t stretch-backports install -y cmake \
+&& apt-get purge && rm -rf /var/lib/apt/lists/*
+RUN curl -o llvm.tar.xz http://releases.llvm.org/5.0.0/clang+llvm-5.0.0-x86_64-linux-gnu-debian8.tar.xz \
 && tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
 && ln -s $(which clang) /usr/local/bin/cc \
 && ln -s $(which clang++) /usr/local/bin/c++ \
 && update-alternatives --install /usr/bin/cc cc $(which clang) 100 \
 && update-alternatives --set cc $(which clang) \
 && update-alternatives --install /usr/bin/c++ c++ $(which clang++) 100 \
-&& update-alternatives --set c++ $(which clang++) \
-&& cd /vc-deps/ \
-&& ./build-deps.sh -system -cmake\
+&& update-alternatives --set c++ $(which clang++)
+RUN cd /vc-deps/ \
+&& mkdir -p build \
+&& cd build/ \
+&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. \
+&& ninja \
 && cd / \
-&& rm -rf /vc-deps/ /root/.cache/fetchurl/ /llvm.tar.xz
+&& rm -rf /vc-deps/ /llvm.tar.xz
 
 # Start an interactive shell
 CMD ["/bin/bash"]
