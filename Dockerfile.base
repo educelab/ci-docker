@@ -2,7 +2,6 @@ FROM debian:stretch-slim
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
-COPY vc-deps/ /vc-deps/
 RUN echo 'deb http://deb.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
 && apt-get clean && apt-get -y update
 RUN apt-get install --fix-missing --fix-broken -y \
@@ -38,14 +37,9 @@ RUN curl -o llvm.tar.xz http://releases.llvm.org/5.0.0/clang+llvm-5.0.0-x86_64-l
 && update-alternatives --install /usr/bin/cc cc $(which clang) 100 \
 && update-alternatives --set cc $(which clang) \
 && update-alternatives --install /usr/bin/c++ c++ $(which clang++) 100 \
-&& update-alternatives --set c++ $(which clang++)
-RUN cd /vc-deps/ \
-&& mkdir -p build \
-&& cd build/ \
-&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .. \
-&& ninja \
+&& update-alternatives --set c++ $(which clang++) \
 && cd / \
-&& rm -rf /vc-deps/ /llvm.tar.xz
+&& rm -rf /llvm.tar.xz
 
 # Start an interactive shell
 CMD ["/bin/bash"]
