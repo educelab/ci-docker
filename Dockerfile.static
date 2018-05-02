@@ -1,0 +1,15 @@
+FROM volcart/vcbuilder-debian:9_v4.base
+MAINTAINER Seth Parker <c.seth.parker@uky.edu>
+
+# Install apt sources
+COPY vc-deps/ /vc-deps/
+RUN cd /vc-deps/ \
+&& mkdir -p build \
+&& cd build/ \
+&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. \
+&& ninja \
+&& cd / \
+&& rm -rf /vc-deps/
+
+# Start an interactive shell
+CMD ["/bin/bash"]
