@@ -1,4 +1,4 @@
-FROM volcart/vcbuilder-debian:9_v5.static
+FROM volcart/vcbuilder-debian:9_v6.static
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
