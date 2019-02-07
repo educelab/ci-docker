@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPO=volcart/vcbuilder-debian
-VERSION=9_v5
+VERSION=9_v6
 
 docker build -t ${REPO}:${VERSION}.base -f Dockerfile.base . && \
 docker build -t ${REPO}:${VERSION}.static -f Dockerfile.static . && \
