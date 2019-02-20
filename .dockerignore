@@ -1,2 +1,4 @@
 *.md
+*.sh
 graphics/
+Dockerfile*
