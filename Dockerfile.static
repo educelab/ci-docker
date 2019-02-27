@@ -6,7 +6,7 @@ COPY vc-deps/ /vc-deps/
 RUN cd /vc-deps/ \
 && mkdir -p build \
 && cd build/ \
-&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .. \
+&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. \
 && ninja \
 && cd / \
 && rm -rf /vc-deps/
