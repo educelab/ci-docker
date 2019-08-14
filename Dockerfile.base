@@ -19,6 +19,7 @@ RUN apt-get install --fix-missing --fix-broken -y \
     libgl1-mesa-dev \
     libusb-1.0-0-dev \
     libqt5opengl5-dev \
+    libqt5x11extras5-dev \
     libxkbcommon-dev \
     libxt-dev \
     make \
@@ -30,10 +31,12 @@ RUN apt-get install --fix-missing --fix-broken -y \
     python3-setuptools \
     qt5-default \
     qtbase5-dev \
+    qttools5-dev \
     libexpat1-dev \
+    zlib1g-dev \
 && apt-get -t stretch-backports install -y cmake \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
-RUN curl -o llvm.tar.xz http://releases.llvm.org/5.0.0/clang+llvm-5.0.0-x86_64-linux-gnu-debian8.tar.xz \
+RUN curl -o llvm.tar.xz http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-debian8.tar.xz \
 && tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
 && ln -s $(which clang) /usr/local/bin/cc \
 && ln -s $(which clang++) /usr/local/bin/c++ \

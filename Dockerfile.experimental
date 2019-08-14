@@ -1,7 +1,7 @@
-FROM volcart/vcbuilder-debian:9_v7.static
+FROM volcart/vcbuilder-debian:9_v8.static
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
-# Install apt sources
+# Install experimental dependencies
 RUN apt-get clean && apt-get -y update && \
 apt-get install --fix-missing --fix-broken -y \
     libbullet-dev \
