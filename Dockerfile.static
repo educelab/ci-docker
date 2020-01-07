@@ -1,7 +1,7 @@
-FROM volcart/vcbuilder-debian:9_v8.base
+FROM volcart/vcbuilder-debian:9_v9.base
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
-# Install vc-deps (dynamic)
+# Install vc-deps (static)
 COPY vc-deps/ /vc-deps/
 RUN cd /vc-deps/ \
 && mkdir -p build \
