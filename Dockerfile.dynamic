@@ -1,4 +1,4 @@
-FROM volcart/vcbuilder-debian:9_v9.base
+FROM volcart/vcbuilder-debian:10_v1.base
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install vc-deps (dynamic)

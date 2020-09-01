@@ -1,51 +1,49 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
-RUN echo 'deb http://ftp.debian.org/debian stretch-backports main' > /etc/apt/sources.list.d/backports.list \
+RUN echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list \
 && apt-get clean && apt-get -y update
 RUN apt-get install --fix-missing --fix-broken -y \
-    binutils \
-    libgc1c2 \
-    libgcc-6-dev \
-    libobjc-6-dev \
-    libobjc4 \
-    libstdc++-6-dev \
-    bzip2 \
-    xz-utils \
+    build-essential \
     curl \
     git \
     libbz2-dev \
+    libexpat1-dev \
     libgl1-mesa-dev \
+    libicu-dev \
+    libncurses-dev \
+    libopenblas-dev \
     libusb-1.0-0-dev \
-    libqt5opengl5-dev \
-    libqt5x11extras5-dev \
+    '^libxcb.*-dev' \
+    libx11-xcb-dev \
+    libglu1-mesa-dev \
+    libxrender-dev \
+    libxi-dev \
     libxkbcommon-dev \
+    libxkbcommon-x11-dev \
     libxt-dev \
-    make \
-    ncurses-dev \
     ninja-build \
+    perl \
     pkg-config \
     python3-dev \
     python3-pip \
     python3-setuptools \
-    qt5-default \
-    qtbase5-dev \
-    qttools5-dev \
-    libexpat1-dev \
     zlib1g-dev \
-&& apt-get -t stretch-backports install -y cmake \
+&& ln -s /usr/bin/python3 /usr/bin/python \
+&& apt-get -t buster-backports install -y cmake \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
-RUN curl -o llvm.tar.xz http://releases.llvm.org/6.0.0/clang+llvm-6.0.0-x86_64-linux-gnu-debian8.tar.xz \
-&& tar -xf llvm.tar.xz --strip-components 1 -C /usr/local \
-&& ln -s $(which clang) /usr/local/bin/cc \
-&& ln -s $(which clang++) /usr/local/bin/c++ \
-&& update-alternatives --install /usr/bin/cc cc $(which clang) 100 \
-&& update-alternatives --set cc $(which clang) \
-&& update-alternatives --install /usr/bin/c++ c++ $(which clang++) 100 \
-&& update-alternatives --set c++ $(which clang++) \
-&& cd / \
-&& rm -rf /llvm.tar.xz
+
+# Install Qt 5.15
+RUN curl -O -L https://download.qt.io/archive/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz \
+&& tar -xf qt-everywhere-src-5.15.0.tar.xz \
+&& mkdir qt-build/ \
+&& cd qt-build/ \
+&& ../qt-everywhere-src-5.15.0/configure -opensource -nomake examples -nomake tests -confirm-license -prefix /usr/\
+&& make -j$(nproc) \
+&& make install \
+&& cd ../ \
+&& rm -rf qt-*
 
 # Start an interactive shell
 CMD ["/bin/bash"]
