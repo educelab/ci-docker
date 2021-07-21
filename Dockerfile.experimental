@@ -1,4 +1,4 @@
-FROM volcart/vcbuilder-debian:10_v1.static
+FROM volcart/vcbuilder-debian:10_v2.static
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install experimental dependencies

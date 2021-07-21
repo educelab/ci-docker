@@ -1,4 +1,4 @@
 [submodule "vc-deps"]
 	path = vc-deps
-	url = https://code.cs.uky.edu/seales-research/vc-deps.git
-	branch = master
+	url = https://gitlab.com/educelab/vc-deps.git
+	branch = develop

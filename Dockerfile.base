@@ -35,11 +35,11 @@ RUN apt-get install --fix-missing --fix-broken -y \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
 
 # Install Qt 5.15
-RUN curl -O -L https://download.qt.io/archive/qt/5.15/5.15.0/single/qt-everywhere-src-5.15.0.tar.xz \
-&& tar -xf qt-everywhere-src-5.15.0.tar.xz \
+RUN curl -O -L https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz \
+&& tar -xf qt-everywhere-src-5.15.2.tar.xz \
 && mkdir qt-build/ \
 && cd qt-build/ \
-&& ../qt-everywhere-src-5.15.0/configure -opensource -nomake examples -nomake tests -confirm-license -prefix /usr/\
+&& ../qt-everywhere-src-5.15.2/configure -opensource -nomake examples -nomake tests -confirm-license -prefix /usr/\
 && make -j$(nproc) \
 && make install \
 && cd ../ \
