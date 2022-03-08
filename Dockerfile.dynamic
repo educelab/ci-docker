@@ -1,4 +1,4 @@
-FROM volcart/vcbuilder-debian:10_v2.base
+FROM volcart/vcbuilder-debian:11_v1.base
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install vc-deps (dynamic)
@@ -6,7 +6,7 @@ COPY vc-deps/ /vc-deps/
 RUN cd /vc-deps/ \
 && mkdir -p build \
 && cd build/ \
-&& cmake -GNinja -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_WITH_QT5=ON -DVCDEPS_BUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
+&& cmake -GNinja -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DVCDEPS_BUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
 && ninja \
 && cd / \
 && rm -rf /vc-deps/
