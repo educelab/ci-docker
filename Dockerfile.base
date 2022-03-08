@@ -1,8 +1,8 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 
 # Install apt sources
-RUN echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/backports.list \
+RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/backports.list \
 && apt-get clean && apt-get -y update
 RUN apt-get install --fix-missing --fix-broken -y \
     build-essential \
@@ -10,18 +10,36 @@ RUN apt-get install --fix-missing --fix-broken -y \
     git \
     libbz2-dev \
     libexpat1-dev \
+    libfontconfig1-dev \
+    libfreetype6-dev \
     libgl1-mesa-dev \
+    libglu1-mesa-dev \
     libicu-dev \
     libncurses-dev \
     libopenblas-dev \
     libusb-1.0-0-dev \
     '^libxcb.*-dev' \
+    libx11-dev \
     libx11-xcb-dev \
-    libglu1-mesa-dev \
-    libxrender-dev \
+    libxcb-glx0-dev \
+    libxcb-keysyms1-dev \
+    libxcb-image0-dev \
+    libxcb-shm0-dev \
+    libxcb-icccm4-dev \
+    libxcb-sync-dev \
+    libxcb-xfixes0-dev \
+    libxcb-shape0-dev \
+    libxcb-randr0-dev \
+    libxcb-render-util0-dev \
+    libxcb-util-dev \
+    libxcb-xinerama0-dev \
+    libxcb-xkb-dev \
+    libxext-dev \
+    libxfixes-dev \
     libxi-dev \
     libxkbcommon-dev \
     libxkbcommon-x11-dev \
+    libxrender-dev \
     libxt-dev \
     ninja-build \
     perl \
@@ -31,17 +49,16 @@ RUN apt-get install --fix-missing --fix-broken -y \
     python3-setuptools \
     zlib1g-dev \
 && ln -s /usr/bin/python3 /usr/bin/python \
-&& apt-get -t buster-backports install -y cmake \
+&& apt-get -t bullseye-backports install -y cmake \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
 
-# Install Qt 5.15
-RUN curl -O -L https://download.qt.io/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz \
-&& tar -xf qt-everywhere-src-5.15.2.tar.xz \
-&& mkdir qt-build/ \
-&& cd qt-build/ \
-&& ../qt-everywhere-src-5.15.2/configure -opensource -nomake examples -nomake tests -confirm-license -prefix /usr/\
-&& make -j$(nproc) \
-&& make install \
+# Install Qt 6.2
+RUN curl -O -L https://download.qt.io/archive/qt/6.2/6.2.3/single/qt-everywhere-src-6.2.3.tar.xz \
+&& tar -xf qt-everywhere-src-6.2.3.tar.xz \
+&& cd qt-everywhere-src-6.2.3/ \
+&& ./configure -opensource -nomake examples -nomake tests -bundled-xcb-xinput -confirm-license \
+&& cmake --build . --parallel \
+&& cmake --install . \
 && cd ../ \
 && rm -rf qt-*
 
