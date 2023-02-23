@@ -3,18 +3,19 @@
 This repository contains the Dockerfile to build the `volcart/vcbuilder-debian`
 [Docker image](https://hub.docker.com/repository/docker/volcart/vcbuilder-debian). This image contains all prerequisite libraries required
 to build and test the
-[volume-cartographer](https://gitlab.com/educelab/volume-cartographer)
+[volume-cartographer](https://github.com/educelab/volume-cartographer)
 project. Most of the build is handled by
-[vc-deps](https://gitlab.com/educelab/vc-deps) so that consistency can be
+[vc-deps](https://github.com/educelab/vc-deps) so that consistency can be
 maintained across platforms.
 
 ## Requirements
- * Docker 4.5+
+ * Docker engine 19.03+
 
 ## Building
 ```shell
-git clone --recursive https://code.vis.uky.edu/seales-research/docker-debian-builder.git
-cd docker-debian-builder
+git clone --recursive https://gitlab.com/educelab/ci-docker.git
+cd ci-docker
+docker buildx create --use
 ./build.sh
 ```
 
