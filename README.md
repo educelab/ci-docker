@@ -1,7 +1,7 @@
-# Volume Cartographer Debian Docker Builder
+# EduceLab Docker CI Configuration
 
-This repository contains the Dockerfile to build the `volcart/vcbuilder-debian`
-[Docker image](https://hub.docker.com/repository/docker/volcart/vcbuilder-debian). This image contains all prerequisite libraries required
+This repository contains the Dockerfile to build the `ghcr.io/educelab/ci-docker`
+[Docker image](https://github.com/orgs/educelab/packages/container/package/ci-docker). This image contains all prerequisite libraries required
 to build and test the
 [volume-cartographer](https://github.com/educelab/volume-cartographer)
 project. Most of the build is handled by
@@ -13,7 +13,7 @@ maintained across platforms.
 
 ## Building
 ```shell
-git clone --recursive https://gitlab.com/educelab/ci-docker.git
+git clone --recursive https://github.com/educelab/ci-docker
 cd ci-docker
 docker buildx create --use
 ./build.sh
