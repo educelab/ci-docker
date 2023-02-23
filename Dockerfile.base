@@ -1,5 +1,7 @@
 FROM debian:bullseye-slim
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
+LABEL org.opencontainers.image.description Base system-provided packages 
+LABEL org.opencontainers.image.source https://github.com/educelab/ci-docker
 
 # Install apt sources
 RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/backports.list \
