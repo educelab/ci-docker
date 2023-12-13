@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPO=ghcr.io/educelab/ci-docker
-VERSION=11_v2
+VERSION=12_v1
 
 docker buildx build --platform linux/amd64,linux/arm64 --push -t ${REPO}:${VERSION}.base -f Dockerfile.base . && \
 docker buildx build --platform linux/amd64,linux/arm64 --push -t ${REPO}:${VERSION}.dynamic -f Dockerfile.dynamic . && \
