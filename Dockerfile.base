@@ -57,7 +57,7 @@ RUN apt-get install --fix-missing --fix-broken -y \
 
 # Install Qt6
 RUN python3 -m venv venv \
-&& source venv/bin/activate \
+&& . ./venv/bin/activate \
 && python -m pip install aqtinstall \
 && mkdir -p /usr/local/Qt-6.6.1/ \
 && aqt install --outputdir /usr/local/Qt-6.6.1/ linux desktop 6.6.1 gcc_64 \
