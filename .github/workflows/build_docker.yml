@@ -11,6 +11,9 @@ jobs:
     name: Build base image
     runs-on: ubuntu-latest
     steps:
+      - name: Delete unused tools folder
+        run: rm -rf /opt/hostedtoolcache
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4
