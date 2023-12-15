@@ -1,8 +1,5 @@
 name: Deploy Docker images
-on:
-  push:
-    branches: ["main", "release-12_v1"]
-    tags: ["v*"]
+on: workflow_dispatch
 
 concurrency: docker
 
@@ -31,7 +28,6 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=ref,prefix=base.,event=branch
             type=ref,prefix=base.,event=pr
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
@@ -79,7 +75,6 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=ref,prefix=base.,event=branch
             type=ref,prefix={{ matrix.type }}.,event=pr
             type=semver,prefix={{ matrix.type }}.,pattern={{version}}
             type=semver,prefix={{ matrix.type }}.,pattern={{major}}.{{minor}}
