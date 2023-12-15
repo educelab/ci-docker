@@ -1,4 +1,4 @@
-FROM ghcr.io/educelab/ci-docker:12_v1.base
+FROM ghcr.io/educelab/ci-docker:base.latest
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
 LABEL org.opencontainers.image.title ci-docker (dynamic)
 LABEL org.opencontainers.image.description Dynamic vc-deps libraries

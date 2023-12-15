@@ -7,11 +7,10 @@ timestamp() {
 }
 
 REPO=ghcr.io/educelab/ci-docker
-MAJOR=12
-MINOR=0
-PATCH=0
-SUFFIX=
-VERSION_FULL=${MAJOR}.${MINOR}.${PATCH}${SUFFIX}
+VER_MAJOR=12
+VER_MINOR=0
+VER_PATCH=0
+VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
 REV=$(git rev-parse --verify HEAD)
 
 labels() {
@@ -19,15 +18,16 @@ labels() {
     --label org.opencontainers.image.licenses=AGPL-3.0 \
     --label org.opencontainers.image.revision=${REV} \
     --label org.opencontainers.image.url=https://github.com/educelab/ci-docker \
-    --label org.opencontainers.image.version=${VERSION_FULL}
+    --label org.opencontainers.image.version=${VER_FULL}
 }
 
 tags() {
   TYPE=$1
-  TAGS="--tag ${REPO}:${TYPE}.${VERSION_FULL} \
-        --tag ${REPO}:${TYPE}.${MAJOR}.${MINOR}"
+  TAGS="--tag ${REPO}:${TYPE}.${VER_FULL} \
+        --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
+        --tag ${REPO}:${TYPE}.latest"
   if [[ $TYPE == 'static' ]]; then
-    TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VERSION_FULL} --tag ${REPO}:${MAJOR}.${MINOR}"
+    TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
   fi
   echo "${TAGS}"
 }
