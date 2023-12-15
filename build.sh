@@ -33,9 +33,9 @@ tags() {
 }
 
 echo ========== Building base image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --push $(labels) $(tags base) -f Dockerfile.base .
+docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags base) -f Dockerfile.base .
 echo ========== Building dynamic image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --push $(labels) $(tags dynamic) -f Dockerfile.dynamic .
+docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags dynamic) -f Dockerfile.dynamic .
 echo ========== Building static image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --push $(labels) $(tags static) -f Dockerfile.static .
+docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags static) -f Dockerfile.static .
 echo ========== Done  ==========
