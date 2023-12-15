@@ -1,5 +1,6 @@
-FROM ghcr.io/educelab/ci-docker:11_v2.base
+FROM ghcr.io/educelab/ci-docker:base.latest
 MAINTAINER Seth Parker <c.seth.parker@uky.edu>
+LABEL org.opencontainers.image.title ci-docker (static)
 LABEL org.opencontainers.image.description Static vc-deps libraries
 LABEL org.opencontainers.image.source https://github.com/educelab/ci-docker
 

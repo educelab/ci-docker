@@ -20,5 +20,12 @@ docker buildx create --use
 ```
 
 ## Updating the version
-1. Change `VERSION` in [build.sh](build.sh)
-2. Update the base image version in the `FROM` command for each of the `Dockerfile.[static|dynamic]` files
+Change the version components in [build.sh](build.sh). Values should match the rules 
+for [semantic versioning](https://semver.org/):
+
+```bash
+# build.sh
+VER_MAJOR=12
+VER_MINOR=0
+VER_PATCH=0
+```
