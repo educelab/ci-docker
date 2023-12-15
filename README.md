@@ -29,3 +29,30 @@ VER_MAJOR=12
 VER_MINOR=0
 VER_PATCH=0
 ```
+
+### Version rules
+#### Updating the Debian version
+- Set `VER_MAJOR` to the Debian version number
+- Set `VER_MINOR=0`
+- Set `VER_PATCH=0`
+
+#### Adding/removing apt packages
+- Increment `VER_MINOR`
+- Set `VER_PATCH=0`
+
+#### Updating the apt packages (i.e. rebuilding without adding/removing packages)
+- Remove your local copy of `ci-docker:base.latest`
+- Increment `VER_PATCH`
+
+#### Updating the installed Qt version
+- Increment `VER_MINOR`
+- Set `VER_PATCH=0`
+
+#### Updating vc-deps to a new minor version
+- Checkout the appropriate ref in the vc-deps directory
+- Increment `VER_MINOR`
+- Set `VER_PATCH=0`
+
+#### Updating vc-deps to a new patch version
+- Checkout the appropriate ref in the vc-deps directory
+- Increment `VER_PATCH`
