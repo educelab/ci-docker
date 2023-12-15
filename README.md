@@ -12,12 +12,26 @@ maintained across platforms.
  * Docker engine 19.03+
 
 ## Building
-```shell
-git clone --recursive https://github.com/educelab/ci-docker
-cd ci-docker
-docker buildx create --use
-./build.sh
-```
+1. Get the source code for the repository:
+   ```shell
+    git clone --recursive https://github.com/educelab/ci-docker
+    cd ci-docker
+   ```
+
+2. Update the version number, packages, and code references. See 
+   [Updating the version](#updating-the-version).
+
+3. If your changes don't affect the base image, pull the 
+latest base image from the registry to avoid rebuilding it:
+   ```shell
+   docker pull ghcr.io/educelab/ci-docker:base.latest
+   ```
+
+4. Set up a multi-arch Docker builder and run the build script:
+   ```shell
+   docker buildx create --use
+   ./build.sh
+   ```
 
 ## Updating the version
 Change the version components in [build.sh](build.sh). Values should match the rules 
