@@ -2,11 +2,11 @@ name: Deploy Docker images
 on:
   workflow_dispatch:
   push:
-    branches: ["develop"]
+    branches: ["main"]
     tags: ["v*"]
   pull_request:
     branches:
-      - "develop"
+      - "main"
 
 concurrency: docker
 
