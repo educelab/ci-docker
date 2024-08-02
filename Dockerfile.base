@@ -1,8 +1,8 @@
 FROM debian:bookworm-slim
-MAINTAINER Seth Parker <c.seth.parker@uky.edu>
-LABEL org.opencontainers.image.title ci-docker (base)
-LABEL org.opencontainers.image.description Base system packages 
-LABEL org.opencontainers.image.source https://github.com/educelab/ci-docker
+LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
+LABEL org.opencontainers.image.title="ci-docker (base)"
+LABEL org.opencontainers.image.description="Base system packages"
+LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
 
 # Install apt sources
 RUN echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list \
