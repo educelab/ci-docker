@@ -1,6 +1,6 @@
 name: Deploy Docker images
-# Disabled because it takes forever and is bug prone
-# on:
+
+on: workflow_call
 #   workflow_dispatch:
 #   push:
 #     branches: ["main"]

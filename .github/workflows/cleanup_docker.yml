@@ -1,6 +1,6 @@
 name: Cleanup Docker images
 
-# on: 
+on: workflow_call
 #   pull_request:
 #     types: [closed]
 
