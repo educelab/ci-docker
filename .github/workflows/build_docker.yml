@@ -1,5 +1,12 @@
 name: Deploy Docker images
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches: ["develop"]
+    tags: ["v*"]
+  pull_request:
+    branches:
+      - "develop"
 
 concurrency: docker
 
@@ -47,7 +54,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image
+      - name: Build and push image
         uses: docker/build-push-action@v3
         with:
           file: ./Dockerfile.base
@@ -95,7 +102,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build image
+      - name: Build and push image
         uses: docker/build-push-action@v3
         with:
           file: ./Dockerfile.{{ matrix.type }}
