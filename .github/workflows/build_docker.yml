@@ -1,11 +1,11 @@
 name: Deploy Docker images
 
-on:
-  workflow_dispatch:
-  push:
-    branches: ["main"]
-  release:
-    types: [published]
+on: workflow_call
+  # workflow_dispatch:
+  # push:
+  #   branches: ["main"]
+  # release:
+  #   types: [published]
 
 concurrency: docker
 
