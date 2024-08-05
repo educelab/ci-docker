@@ -40,7 +40,7 @@ for [semantic versioning](https://semver.org/):
 ```bash
 # build.sh
 VER_MAJOR=12
-VER_MINOR=0
+VER_MINOR=1
 VER_PATCH=0
 ```
 

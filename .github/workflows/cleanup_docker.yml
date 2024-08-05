@@ -1,0 +1,20 @@
+name: Cleanup Docker images
+
+on: workflow_call
+#   pull_request:
+#     types: [closed]
+
+jobs:
+  cleanup-pr-images:
+    name: Clean up PR images
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Remove PR tags
+        uses: dataaxiom/ghcr-cleanup-action@v1
+        with:
+          tags: '*.pr-${{github.event.pull_request.number}}'
+          dry-run: true
+          validate: true
+          token: ${{ secrets.GITHUB_TOKEN }}
