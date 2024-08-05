@@ -1,13 +1,11 @@
 name: Deploy Docker images
 
-on: workflow_call
-#   workflow_dispatch:
-#   push:
-#     branches: ["main"]
-#     tags: ["v*"]
-#   pull_request:
-#     branches:
-#       - "main"
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+  release:
+    types: [published]
 
 concurrency: docker
 
@@ -40,6 +38,7 @@ jobs:
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
             type=raw,prefix=base.,value=edge,enable={{is_default_branch}}
+            type=raw,prefix=base.,value=latest,enable={{ github.event_name == 'release' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -83,11 +82,13 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=ref,prefix={{ matrix.type }}.,event=pr
+            type=ref,prefix={{ matrix.type }}.pr-,event=pr
             type=semver,prefix={{ matrix.type }}.,pattern={{version}}
             type=semver,prefix={{ matrix.type }}.,pattern={{major}}.{{minor}}
-            type=raw,value=edge,enable={{is_default_branch}}
-            type=raw,value=latest,enable={{ is_default_branch && matrix.type == 'static' }}
+            type=raw,prefix={{ matrix.type }}.,value=edge,enable={{is_default_branch}}
+            type=raw,prefix={{ matrix.type }}.,value=latest,enable={{ github.event_name == 'release' }}
+            type=raw,value=edge,enable={{ is_default_branch && matrix.type == 'static' }}
+            type=raw,value=latest,enable={{ github.event_name == 'release' && matrix.type == 'static' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
