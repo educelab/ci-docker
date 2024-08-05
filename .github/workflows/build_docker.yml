@@ -38,7 +38,7 @@ jobs:
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
             type=raw,prefix=base.,value=edge,enable={{is_default_branch}}
-            type=raw,prefix=base.,value=latest,enable={{ github.event_name == 'release' }}
+            type=raw,prefix=base.,value=latest,enable=${{ github.event_name == 'release' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -88,7 +88,7 @@ jobs:
             type=raw,prefix={{ matrix.type }}.,value=edge,enable={{is_default_branch}}
             type=raw,prefix={{ matrix.type }}.,value=latest,enable={{ github.event_name == 'release' }}
             type=raw,value=edge,enable={{ is_default_branch && matrix.type == 'static' }}
-            type=raw,value=latest,enable={{ github.event_name == 'release' && matrix.type == 'static' }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && matrix.type == 'static' }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
