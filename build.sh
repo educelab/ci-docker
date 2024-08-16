@@ -9,7 +9,8 @@ timestamp() {
 REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=0
+VER_PATCH=1
+VER_EXTRA="-dev1"
 VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
 REV=$(git rev-parse --verify HEAD)
 
@@ -23,11 +24,16 @@ labels() {
 
 tags() {
   TYPE=$1
-  TAGS="--tag ${REPO}:${TYPE}.${VER_FULL} \
-        --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
-        --tag ${REPO}:${TYPE}.latest"
-  if [[ $TYPE == 'static' ]]; then
-    TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
+  TAGS=""
+  if [[ -z "$VER_EXTRA" ]]; then
+    TAGS="--tag ${REPO}:${TYPE}.${VER_FULL} \
+          --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
+          --tag ${REPO}:${TYPE}.latest"
+    if [[ $TYPE == 'static' ]]; then
+      TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
+    fi
+  else
+    TAGS="--tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}"
   fi
   echo "${TAGS}"
 }
