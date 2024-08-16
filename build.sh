@@ -11,7 +11,7 @@ VER_MAJOR=12
 VER_MINOR=1
 VER_PATCH=1
 VER_EXTRA="-dev1"
-VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
+VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
 REV=$(git rev-parse --verify HEAD)
 
 labels() {
@@ -24,16 +24,14 @@ labels() {
 
 tags() {
   TYPE=$1
-  TAGS=""
+  TAGS="--tag ${REPO}:${TYPE}.${VER_FULL}"
   if [[ -z "$VER_EXTRA" ]]; then
-    TAGS="--tag ${REPO}:${TYPE}.${VER_FULL} \
+    TAGS="${TAGS} \
           --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
           --tag ${REPO}:${TYPE}.latest"
     if [[ $TYPE == 'static' ]]; then
       TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
     fi
-  else
-    TAGS="--tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}"
   fi
   echo "${TAGS}"
 }
