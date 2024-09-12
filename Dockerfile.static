@@ -15,4 +15,4 @@ RUN cd /vc-deps/ \
 && rm -rf /vc-deps/
 
 # Start an interactive shell
-CMD ["/bin/bash"]
+ENTRYPOINT /bin/bash

@@ -44,6 +44,7 @@ RUN apt-get install --fix-missing --fix-broken -y \
     libxkbcommon-x11-dev \
     libxrender-dev \
     libxt-dev \
+    locales \
     ninja-build \
     perl \
     pkg-config \
@@ -52,6 +53,7 @@ RUN apt-get install --fix-missing --fix-broken -y \
     python3-setuptools \
     zlib1g-dev \
 && ln -s /usr/bin/python3 /usr/bin/python \
+&& sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen \
 && apt-get -t bookworm-backports install -y cmake \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
 
@@ -65,5 +67,11 @@ RUN curl -O -L https://download.qt.io/archive/qt/6.7/6.7.2/single/qt-everywhere-
 && cd ../ \
 && rm -rf qt-*
 
+# Set environment variables
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+ENV QT_PLUGIN_PATH /usr/local/Qt-6.7.2/plugins
+
 # Start an interactive shell
-CMD ["/bin/bash"]
+ENTRYPOINT /bin/bash
