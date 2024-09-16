@@ -1,8 +1,15 @@
-FROM debian:bookworm-slim
+### Base ###
+FROM debian:bookworm-slim AS base
 LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
 LABEL org.opencontainers.image.title="ci-docker (base)"
 LABEL org.opencontainers.image.description="Base system packages"
 LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
+
+# Set environment variables
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+ENV QT_PLUGIN_PATH=/usr/local/Qt-6.7.2/plugins
 
 # Install apt sources
 RUN echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list \
@@ -67,11 +74,45 @@ RUN curl -O -L https://download.qt.io/archive/qt/6.7/6.7.2/single/qt-everywhere-
 && cd ../ \
 && rm -rf qt-*
 
-# Set environment variables
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
-ENV QT_PLUGIN_PATH /usr/local/Qt-6.7.2/plugins
+# Start an interactive shell
+ENTRYPOINT ["/bin/bash", "-l", "-c"]
+
+### Dynamic ###
+FROM base AS dynamic
+LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
+LABEL org.opencontainers.image.title="ci-docker (dynamic)"
+LABEL org.opencontainers.image.description="Dynamic vc-deps libraries"
+LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
+
+# Install vc-deps (dynamic)
+COPY vc-deps/ /vc-deps/
+RUN cd /vc-deps/ \
+&& mkdir -p build \
+&& cd build/ \
+&& cmake -GNinja -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DVCDEPS_BUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
+&& ninja \
+&& cd / \
+&& rm -rf /vc-deps/
 
 # Start an interactive shell
-ENTRYPOINT /bin/bash
+ENTRYPOINT ["/bin/bash", "-l", "-c"]
+
+### Static ###
+FROM base AS static
+LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
+LABEL org.opencontainers.image.title="ci-docker (static)"
+LABEL org.opencontainers.image.description="Static vc-deps libraries"
+LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
+
+# Install vc-deps (static)
+COPY vc-deps/ /vc-deps/
+RUN cd /vc-deps/ \
+&& mkdir -p build \
+&& cd build/ \
+&& cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DVCDEPS_BUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_POSITION_INDEPENDENT_CODE=ON .. \
+&& ninja \
+&& cd / \
+&& rm -rf /vc-deps/
+
+# Start an interactive shell
+ENTRYPOINT ["/bin/bash", "-l", "-c"]

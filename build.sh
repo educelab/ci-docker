@@ -10,7 +10,7 @@ REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
 VER_PATCH=1
-VER_EXTRA="-dev2"
+VER_EXTRA="-dev3"
 VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
 REV=$(git rev-parse --verify HEAD)
 
@@ -37,9 +37,9 @@ tags() {
 }
 
 echo ========== Building base image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags base) -f Dockerfile.base .
+docker buildx build --target base --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags base) -f Dockerfile .
 echo ========== Building dynamic image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags dynamic) -f Dockerfile.dynamic .
+docker buildx build --target dynamic --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags dynamic) -f Dockerfile .
 echo ========== Building static image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags static) -f Dockerfile.static .
+docker buildx build --target static --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags static) -f Dockerfile .
 echo ========== Done  ==========
