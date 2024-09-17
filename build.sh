@@ -36,10 +36,13 @@ tags() {
   echo "${TAGS}"
 }
 
-echo ========== Building base image  ==========
-docker buildx build --target base --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags base) -f Dockerfile .
-echo ========== Building dynamic image  ==========
-docker buildx build --target dynamic --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags dynamic) -f Dockerfile .
-echo ========== Building static image  ==========
-docker buildx build --target static --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags static) -f Dockerfile .
-echo ========== Done  ==========
+for TYPE in base dynamic static; do
+  echo ========== Building ${TYPE} image  ==========
+  docker buildx build \
+    --target ${TYPE} \
+    --platform linux/amd64,linux/arm64 \
+    --cache-from ${REPO}:${TYPE}.${VER_FULL} \
+    --cache-from ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
+    --provenance false \
+    --push $(labels) $(tags ${TYPE}) .
+done

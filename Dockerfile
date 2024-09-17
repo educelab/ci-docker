@@ -75,7 +75,7 @@ RUN curl -O -L https://download.qt.io/archive/qt/6.7/6.7.2/single/qt-everywhere-
 && rm -rf qt-*
 
 # Start an interactive shell
-ENTRYPOINT ["/bin/bash", "-l", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]
 
 ### Dynamic ###
 FROM base AS dynamic
@@ -95,7 +95,7 @@ RUN cd /vc-deps/ \
 && rm -rf /vc-deps/
 
 # Start an interactive shell
-ENTRYPOINT ["/bin/bash", "-l", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]
 
 ### Static ###
 FROM base AS static
@@ -115,4 +115,4 @@ RUN cd /vc-deps/ \
 && rm -rf /vc-deps/
 
 # Start an interactive shell
-ENTRYPOINT ["/bin/bash", "-l", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]
