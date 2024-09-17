@@ -39,10 +39,11 @@ tags() {
 for TYPE in base dynamic static; do
   echo ========== Building ${TYPE} image  ==========
   docker buildx build \
-    --target ${TYPE} \
+    -f Dockerfile.${TYPE} \
     --platform linux/amd64,linux/arm64 \
-    --cache-from ${REPO}:${TYPE}.${VER_FULL} \
-    --cache-from ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
+    --build-arg CI_DOCKER_VERSION=${VER_FULL} \
     --provenance false \
-    --push $(labels) $(tags ${TYPE}) .
+    $(labels) \
+    $(tags ${TYPE}) \
+    .
 done

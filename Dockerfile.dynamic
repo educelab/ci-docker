@@ -1,0 +1,26 @@
+# Build args
+ARG CI_DOCKER_VERSION
+
+FROM ghcr.io/educelab/ci-docker:base.$CI_DOCKER_VERSION
+LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
+LABEL org.opencontainers.image.title="ci-docker (dynamic)"
+LABEL org.opencontainers.image.description="Dynamic vc-deps libraries"
+LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
+
+# Set environment variables
+ENV CI_DOCKER_TYPE=dynamic
+ENV CI_DOCKER_VERSION=$CI_DOCKER_VERSION
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+ENV QT_PLUGIN_PATH=/usr/local/Qt-6.7.2/plugins
+
+# Install vc-deps (dynamic)
+COPY vc-deps/ /vc-deps/
+RUN cd /vc-deps/ \
+&& mkdir -p build \
+&& cd build/ \
+&& cmake -GNinja -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DVCDEPS_BUILD_ZLIB=OFF -DCMAKE_INSTALL_PREFIX=/usr .. \
+&& ninja \
+&& cd / \
+&& rm -rf /vc-deps/
