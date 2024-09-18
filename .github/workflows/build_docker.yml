@@ -57,7 +57,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          target: base
+          file: ./Dockerfile.base
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -107,7 +107,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          target: {{ matrix.type }}
+          file: ./Dockerfile.{{ matrix.type }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
