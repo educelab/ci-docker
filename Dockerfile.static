@@ -9,11 +9,6 @@ LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
 
 # Set environment variables
 ENV CI_DOCKER_TYPE=static
-ENV CI_DOCKER_VERSION=$CI_DOCKER_VERSION
-ENV LANG=en_US.UTF-8
-ENV LANGUAGE=en_US:en
-ENV LC_ALL=en_US.UTF-8
-ENV QT_PLUGIN_PATH=/usr/local/Qt-6.7.2/plugins
 
 # Install vc-deps (static)
 COPY vc-deps/ /vc-deps/

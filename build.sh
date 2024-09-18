@@ -45,5 +45,6 @@ for TYPE in base dynamic static; do
     --provenance false \
     $(labels) \
     $(tags ${TYPE}) \
+    --push \
     .
 done
