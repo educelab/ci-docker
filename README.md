@@ -41,7 +41,7 @@ for [semantic versioning](https://semver.org/):
 # build.sh
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=0
+VER_PATCH=1
 ```
 
 ### Version rules
