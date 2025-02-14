@@ -1,8 +1,14 @@
-FROM ghcr.io/educelab/ci-docker:base.latest
+# Build args
+ARG CI_DOCKER_VERSION
+
+FROM ghcr.io/educelab/ci-docker:base.$CI_DOCKER_VERSION
 LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
 LABEL org.opencontainers.image.title="ci-docker (dynamic)"
 LABEL org.opencontainers.image.description="Dynamic vc-deps libraries"
 LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
+
+# Set environment variables
+ENV CI_DOCKER_TYPE=dynamic
 
 # Install vc-deps (dynamic)
 COPY vc-deps/ /vc-deps/
@@ -13,6 +19,3 @@ RUN cd /vc-deps/ \
 && ninja \
 && cd / \
 && rm -rf /vc-deps/
-
-# Start an interactive shell
-CMD ["/bin/bash"]

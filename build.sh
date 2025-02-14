@@ -9,8 +9,9 @@ timestamp() {
 REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=0
-VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}
+VER_PATCH=1
+VER_EXTRA=
+VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
 REV=$(git rev-parse --verify HEAD)
 
 labels() {
@@ -23,19 +24,27 @@ labels() {
 
 tags() {
   TYPE=$1
-  TAGS="--tag ${REPO}:${TYPE}.${VER_FULL} \
-        --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
-        --tag ${REPO}:${TYPE}.latest"
-  if [[ $TYPE == 'static' ]]; then
-    TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
+  TAGS="--tag ${REPO}:${TYPE}.${VER_FULL}"
+  if [[ -z "$VER_EXTRA" ]]; then
+    TAGS="${TAGS} \
+          --tag ${REPO}:${TYPE}.${VER_MAJOR}.${VER_MINOR} \
+          --tag ${REPO}:${TYPE}.latest"
+    if [[ $TYPE == 'static' ]]; then
+      TAGS="${TAGS} --tag ${REPO}:latest --tag ${REPO}:${VER_FULL} --tag ${REPO}:${VER_MAJOR}.${VER_MINOR}"
+    fi
   fi
   echo "${TAGS}"
 }
 
-echo ========== Building base image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags base) -f Dockerfile.base .
-echo ========== Building dynamic image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags dynamic) -f Dockerfile.dynamic .
-echo ========== Building static image  ==========
-docker buildx build --platform linux/amd64,linux/arm64 --provenance false --push $(labels) $(tags static) -f Dockerfile.static .
-echo ========== Done  ==========
+for TYPE in base dynamic static; do
+  echo ========== Building ${TYPE} image  ==========
+  docker buildx build \
+    -f Dockerfile.${TYPE} \
+    --platform linux/amd64,linux/arm64 \
+    --build-arg CI_DOCKER_VERSION=${VER_FULL} \
+    --provenance false \
+    $(labels) \
+    $(tags ${TYPE}) \
+    --push \
+    .
+done
