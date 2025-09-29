@@ -1,6 +1,6 @@
 name: Deploy Docker images
 
-on: workflow_call
+on:
   workflow_dispatch:
   # push:
   #   branches: ["main"]
