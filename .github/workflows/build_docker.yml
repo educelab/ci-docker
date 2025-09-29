@@ -12,7 +12,7 @@ concurrency: docker
 jobs:
   base_image:
     name: Build base image
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-22.04-arm
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
@@ -40,6 +40,9 @@ jobs:
             type=raw,prefix=base.,value=edge,enable={{is_default_branch}}
             type=raw,prefix=base.,value=latest,enable=${{ github.event_name == 'release' }}
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -66,7 +69,7 @@ jobs:
 
   vcdeps_images:
     name: Build vc-deps images
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-22.04-arm
     needs: base_image
     strategy:
       fail-fast: false
@@ -88,6 +91,9 @@ jobs:
             type=raw,prefix={{ matrix.type }}.,value=latest,enable=${{ github.event_name == 'release' }}
             type=raw,value=edge,enable=${{ github.ref_name == 'main' && matrix.type == 'static' }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' && matrix.type == 'static' }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
