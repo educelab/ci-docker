@@ -2,10 +2,10 @@ name: Deploy Docker images
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: ["main"]
-  # release:
-  #   types: [published]
+  push:
+    branches: ["main"]
+  release:
+    types: [published]
 
 concurrency: docker
 
@@ -23,7 +23,7 @@ jobs:
             latest=false
           tags: |
             type=ref,prefix=base.pr-,event=pr
-            type=ref,prefix=base.wd-,event=workflow_dispatch
+            type=ref,prefix=base.br-,event=branch
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
             type=raw,prefix=base.,value=edge,enable={{is_default_branch}}
@@ -76,7 +76,7 @@ jobs:
             latest=false
           tags: |
             type=ref,prefix={{ matrix.type }}.pr-,event=pr
-            type=ref,prefix={{ matrix.type }}.wd-,event=workflow_dispatch
+            type=ref,prefix={{ matrix.type }}.br-,event=branch
             type=semver,prefix={{ matrix.type }}.,pattern={{version}}
             type=semver,prefix={{ matrix.type }}.,pattern={{major}}.{{minor}}
             type=raw,prefix={{ matrix.type }}.,value=edge,enable={{is_default_branch}}
