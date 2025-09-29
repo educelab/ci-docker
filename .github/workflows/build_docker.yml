@@ -1,7 +1,7 @@
 name: Deploy Docker images
 
 on: workflow_call
-  # workflow_dispatch:
+  workflow_dispatch:
   # push:
   #   branches: ["main"]
   # release:
@@ -12,7 +12,7 @@ concurrency: docker
 jobs:
   base_image:
     name: Build base image
-    runs-on: ubuntu-22.04-arm
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
@@ -58,6 +58,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: ./Dockerfile.base
+          build-args: |
+            CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
@@ -108,6 +110,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           file: ./Dockerfile.{{ matrix.type }}
+          build-args: |
+            CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
