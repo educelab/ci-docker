@@ -9,7 +9,7 @@ timestamp() {
 REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=1
+VER_PATCH=2
 VER_EXTRA=
 VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
 REV=$(git rev-parse --verify HEAD)

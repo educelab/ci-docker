@@ -80,5 +80,4 @@ RUN curl -O -L https://download.qt.io/archive/qt/6.7/6.7.2/single/qt-everywhere-
 && rm -rf qt-*
 
 # Start an interactive shell
-ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["echo ci-docker $CI_DOCKER_TYPE.$CI_DOCKER_VERSION"]
