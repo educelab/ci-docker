@@ -41,7 +41,7 @@ for [semantic versioning](https://semver.org/):
 # build.sh
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=1
+VER_PATCH=2
 ```
 
 ### Version rules
@@ -62,7 +62,7 @@ VER_PATCH=1
 - Increment `VER_MINOR`
 - Set `VER_PATCH=0`
 
-#### Updating vc-deps to a new minor version
+#### Updating vc-deps to a new major or minor version
 - Checkout the appropriate ref in the vc-deps directory
 - Increment `VER_MINOR`
 - Set `VER_PATCH=0`
