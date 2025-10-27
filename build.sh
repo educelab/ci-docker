@@ -6,6 +6,7 @@ timestamp() {
     date -u +'%Y-%m-%dT%H:%M:%SZ'
 }
 
+BASE_IMAGE_VERSION=bookworm-slim
 REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
@@ -41,7 +42,7 @@ for TYPE in base dynamic static; do
   docker buildx build \
     -f Dockerfile.${TYPE} \
     --platform linux/amd64,linux/arm64 \
-    --build-arg CI_DOCKER_VERSION=${VER_FULL} \
+    --build-arg BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION} CI_DOCKER_VERSION=${VER_FULL} \
     --provenance false \
     $(labels) \
     $(tags ${TYPE}) \
