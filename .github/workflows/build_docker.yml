@@ -34,7 +34,7 @@ jobs:
         env:
           version: ${{ steps.meta.outputs.version }}
         run: |
-          echo "major_version=${version%%.*}" >> "$GITHUB_OUTPUT"
+          echo "version=${version%%.*}" >> "$GITHUB_OUTPUT"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -57,7 +57,7 @@ jobs:
         with:
           file: ./Dockerfile.base
           build-args: |
-            BASE_IMAGE_VERSION=${{ steps.major_version.outputs.version || "bookworm-slim" }}
+            BASE_IMAGE_VERSION=${{ steps.major_version.outputs.version || 'bookworm-slim' }}
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
