@@ -34,7 +34,9 @@ jobs:
         env:
           version: ${{ steps.meta.outputs.version }}
         run: |
-          echo "version=${version%%.*}" >> "$GITHUB_OUTPUT"
+          if [[ ${version} != base* ]]; then
+            echo "version=${version%%.*}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
