@@ -17,7 +17,7 @@ REV=$(git rev-parse --verify HEAD)
 
 PLATFORMS="linux/amd64,linux/arm64"
 TYPES=(base dynamic static)
-PUSH=]"--push"
+PUSH="--push"
 
 labels() {
     echo --label org.opencontainers.image.created=$(timestamp) \
