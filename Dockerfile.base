@@ -1,7 +1,8 @@
 # Build args
+ARG BASE_IMAGE_VERSION=12-slim
 ARG CI_DOCKER_VERSION
 
-FROM debian:bookworm-slim
+FROM debian:$BASE_IMAGE_VERSION
 LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
 LABEL org.opencontainers.image.title="ci-docker (base)"
 LABEL org.opencontainers.image.description="Base system packages"
@@ -14,11 +15,14 @@ ENV CI_DOCKER_VERSION=$CI_DOCKER_VERSION
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
-ENV QT_PLUGIN_PATH=/usr/local/Qt-6.7.2/plugins
+ENV QT_PLUGIN_PATH=/usr/local/Qt-6.10.0/plugins
 
 # Install apt sources
-RUN echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list \
-&& apt-get clean && apt-get -y update
+RUN if [ "${BASE_IMAGE_VERSION}" = "12-slim" ]; then  \
+      echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list; \
+      export BACKPORTS_TAG="-t bookworm-backports"; \
+    fi \
+    && apt-get clean && apt-get -y update
 RUN apt-get install --fix-missing --fix-broken -y \
     build-essential \
     curl \
@@ -66,7 +70,7 @@ RUN apt-get install --fix-missing --fix-broken -y \
     zlib1g-dev \
 && ln -s /usr/bin/python3 /usr/bin/python \
 && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen \
-&& apt-get -t bookworm-backports install -y cmake \
+&& apt-get ${BACKPORTS_TAG} install -y cmake \
 && apt-get purge && rm -rf /var/lib/apt/lists/*
 
 # Install Qt6
@@ -80,5 +84,4 @@ RUN curl -O -L https://download.qt.io/archive/qt/6.7/6.7.2/single/qt-everywhere-
 && rm -rf qt-*
 
 # Start an interactive shell
-ENTRYPOINT ["/bin/bash", "-c"]
 CMD ["echo ci-docker $CI_DOCKER_TYPE.$CI_DOCKER_VERSION"]

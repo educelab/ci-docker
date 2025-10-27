@@ -9,10 +9,15 @@ timestamp() {
 REPO=ghcr.io/educelab/ci-docker
 VER_MAJOR=12
 VER_MINOR=1
-VER_PATCH=1
+VER_PATCH=2
 VER_EXTRA=
 VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
+BASE_IMAGE_VERSION=${VER_MAJOR}-slim
 REV=$(git rev-parse --verify HEAD)
+
+PLATFORMS="linux/amd64,linux/arm64"
+TYPES=(base dynamic static)
+PUSH="--push"
 
 labels() {
     echo --label org.opencontainers.image.created=$(timestamp) \
@@ -36,15 +41,16 @@ tags() {
   echo "${TAGS}"
 }
 
-for TYPE in base dynamic static; do
+for TYPE in "${TYPES[@]}"; do
   echo ========== Building ${TYPE} image  ==========
   docker buildx build \
     -f Dockerfile.${TYPE} \
-    --platform linux/amd64,linux/arm64 \
+    --platform ${PLATFORMS} \
+    --build-arg BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION} \
     --build-arg CI_DOCKER_VERSION=${VER_FULL} \
     --provenance false \
     $(labels) \
     $(tags ${TYPE}) \
-    --push \
+    $PUSH \
     .
 done
