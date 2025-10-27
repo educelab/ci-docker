@@ -57,7 +57,7 @@ jobs:
         with:
           file: ./Dockerfile.base
           build-args: |
-            BASE_IMAGE_VERSION=${{ steps.major_version.outputs.version || 'bookworm-slim' }}
+            BASE_IMAGE_VERSION=${{ steps.major_version.outputs.version || '12' }}-slim
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64

@@ -1,5 +1,5 @@
 # Build args
-ARG BASE_IMAGE_VERSION=bookworm-slim
+ARG BASE_IMAGE_VERSION=12-slim
 ARG CI_DOCKER_VERSION
 
 FROM debian:$BASE_IMAGE_VERSION
@@ -18,9 +18,9 @@ ENV LC_ALL=en_US.UTF-8
 ENV QT_PLUGIN_PATH=/usr/local/Qt-6.10.0/plugins
 
 # Install apt sources
-RUN if [ "${BASE_IMAGE_VERSION}" = "bookworm-slim" ]; then  \
+RUN if [ "${BASE_IMAGE_VERSION}" = "12-slim" ]; then  \
       echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list; \
-      export BACKPORTS_TAG="-t bookworm-backports"
+      export BACKPORTS_TAG="-t bookworm-backports"; \
     fi \
     && apt-get clean && apt-get -y update
 RUN apt-get install --fix-missing --fix-broken -y \
