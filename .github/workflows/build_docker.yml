@@ -2,10 +2,10 @@ name: Deploy Docker images
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-  release:
-    types: [published]
+  # push:
+  #   branches: ["main"]
+  # release:
+  #   types: [published]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
