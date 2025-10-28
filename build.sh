@@ -7,8 +7,8 @@ timestamp() {
 }
 
 REPO=ghcr.io/educelab/ci-docker
-VER_MAJOR=12
-VER_MINOR=2
+VER_MAJOR=13
+VER_MINOR=0
 VER_PATCH=0
 VER_EXTRA=
 VER_FULL=${VER_MAJOR}.${VER_MINOR}.${VER_PATCH}${VER_EXTRA}
