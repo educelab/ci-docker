@@ -9,6 +9,7 @@ LABEL org.opencontainers.image.description="Base system packages"
 LABEL org.opencontainers.image.source="https://github.com/educelab/ci-docker"
 
 # Install apt sources
+ARG BASE_IMAGE_VERSION
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
@@ -16,8 +17,8 @@ RUN if [ "${BASE_IMAGE_VERSION}" = "12-slim" ]; then  \
       echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list; \
       export BACKPORTS_TAG="-t bookworm-backports"; \
     fi \
-    && apt-get clean && apt-get -y update
-RUN apt-get install --fix-missing --fix-broken -y \
+    && apt-get clean && apt-get -y update \
+    && apt-get install --fix-missing --fix-broken -y \
     build-essential \
     curl \
     git \
