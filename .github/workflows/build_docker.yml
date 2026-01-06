@@ -14,6 +14,12 @@ env:
   REGISTRY: ghcr.io
   REGISTRY_IMAGE: educelab/ci-docker
 
+permissions:
+  contents: read
+  packages: write
+  attestations: write
+  id-token: write
+
 jobs:
   build_base_image:
     name: Build base image
