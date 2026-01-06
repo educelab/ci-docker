@@ -79,7 +79,14 @@ RUN if [ "${BASE_IMAGE_VERSION}" = "12-slim" ]; then  \
 RUN curl -O -L https://download.qt.io/archive/qt/6.10/6.10.0/single/qt-everywhere-src-6.10.0.tar.xz \
 && tar -xf qt-everywhere-src-6.10.0.tar.xz \
 && cd qt-everywhere-src-6.10.0/ \
-&& ./configure -opensource -nomake examples -nomake tests -bundled-xcb-xinput -confirm-license \
+&& ./configure \
+  -opensource \
+  -shared \
+  -submodules qtbase \
+  -nomake examples \
+  -nomake tests \
+  -bundled-xcb-xinput \
+  -confirm-license \
 && cmake --build . --parallel \
 && cmake --install . \
 && cd ../ \
