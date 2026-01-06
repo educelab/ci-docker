@@ -16,7 +16,7 @@ env:
 
 jobs:
   build_base_image:
-    name: Build base image by platform
+    name: Build base image
     strategy:
       fail-fast: false
       matrix:
@@ -138,8 +138,9 @@ jobs:
           tags: |
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
-            type=raw,prefix=base.,value=edge,enable={{is_default_branch}}
-            type=raw,prefix=base.,value=latest,enable=${{ github.event_name == 'release' }}
+            type=raw,prefix=base.{{ matrix.major_version }}.,value=edge,enable={{is_default_branch}}
+            type=raw,prefix=base.,value=edge,enable={{is_default_branch && matrix.major_version == 13}}
+            type=raw,prefix=base.,value=latest,enable=${{ github.event_name == 'release' && matrix.major_version == 13 }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests${{ matrix.major_version }}
@@ -152,7 +153,7 @@ jobs:
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}:${{ steps.meta.outputs.version }}
 
   build_vcdeps_images:
-    name: Build vc-deps images by platform
+    name: Build vc-deps images
     needs: merge_base_image
     strategy:
       fail-fast: false
@@ -217,6 +218,7 @@ jobs:
           file: ./Dockerfile.${{ matrix.type }}
           build-args: |
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
+            CI_DOCKER_BASE_TAG=${{ steps.meta.outputs.version || join([matrix.major_version, 'edge'], '.') }}
           platforms: ${{ matrix.arch.platform }}
           tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -276,10 +278,11 @@ jobs:
           tags: |
             type=semver,prefix={{ matrix.type }}.,pattern={{version}}
             type=semver,prefix={{ matrix.type }}.,pattern={{major}}.{{minor}}
-            type=raw,prefix={{ matrix.type }}.,value=edge,enable={{is_default_branch}}
-            type=raw,prefix={{ matrix.type }}.,value=latest,enable=${{ github.event_name == 'release' }}
-            type=raw,value=edge,enable=${{ github.ref_name == 'main' && matrix.type == 'static' }}
-            type=raw,value=latest,enable=${{ github.event_name == 'release' && matrix.type == 'static' }}
+            type=raw,prefix={{ matrix.type }}.{{ matrix.major_version }}.,value=edge,enable={{is_default_branch}}
+            type=raw,prefix={{ matrix.type }}.,value=edge,enable={{is_default_branch && matrix.major_version == 13}}
+            type=raw,prefix={{ matrix.type }}.,value=latest,enable=${{ github.event_name == 'release' && matrix.major_version == 13 }}
+            type=raw,value=edge,enable=${{ github.ref_name == 'main' && matrix.type == 'static' && matrix.major_version == 13 }}
+            type=raw,value=latest,enable=${{ github.event_name == 'release' && matrix.type == 'static' && matrix.major_version == 13 }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests${{ matrix.major_version }}-${{ matrix.type }}

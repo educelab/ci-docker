@@ -1,7 +1,8 @@
 # Build args
 ARG CI_DOCKER_VERSION
+ARG CI_DOCKER_BASE_TAG
 
-FROM ghcr.io/educelab/ci-docker:base.$CI_DOCKER_VERSION
+FROM ghcr.io/educelab/ci-docker:base.$CI_DOCKER_BASE_TAG
 LABEL org.opencontainers.image.authors="Seth Parker <c.seth.parker@uky.edu>"
 LABEL org.opencontainers.image.title="ci-docker (static)"
 LABEL org.opencontainers.image.description="Static vc-deps libraries"

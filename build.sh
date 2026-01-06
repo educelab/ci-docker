@@ -48,6 +48,7 @@ for TYPE in "${TYPES[@]}"; do
     --platform ${PLATFORMS} \
     --build-arg BASE_IMAGE_VERSION=${BASE_IMAGE_VERSION} \
     --build-arg CI_DOCKER_VERSION=${VER_FULL} \
+    --build-arg CI_DOCKER_BASE_TAG=${VER_FULL} \
     --provenance false \
     $(labels) \
     $(tags ${TYPE}) \
