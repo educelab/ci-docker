@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         major_version: [12, 13]
-        include:
+        arch:
           - platform: linux/amd64
             runner: ubuntu-latest
           - platform: linux/arm64
@@ -29,7 +29,7 @@ jobs:
         exclude:
           - major_version: ${{ startsWith(github.event.release.tag_name, 'v13') && 12 || '' }}
           - major_version: ${{ startsWith(github.event.release.tag_name, 'v12') && 13 || '' }}
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.arch.runner }}
     steps:
       - name: Clean up disk space
         run: |
@@ -50,7 +50,7 @@ jobs:
 
       - name: Prepare env
         run: |
-          platform=${{ matrix.platform }}
+          platform=${{ matrix.arch.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
 
       - name: Extract Docker metadata
@@ -80,7 +80,7 @@ jobs:
           build-args: |
             BASE_IMAGE_VERSION=${{ matrix.major_version }}-slim
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
-          platforms: ${{ matrix.platform }}
+          platforms: ${{ matrix.arch.platform }}
           tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
@@ -159,7 +159,7 @@ jobs:
       matrix:
         type: [static, dynamic]
         major_version: [12, 13]
-        include:
+        arch:
           - platform: linux/amd64
             runner: ubuntu-latest
           - platform: linux/arm64
@@ -167,7 +167,7 @@ jobs:
         exclude:
           - major_version: ${{ startsWith(github.event.release.tag_name, 'v13') && 12 || '' }}
           - major_version: ${{ startsWith(github.event.release.tag_name, 'v12') && 13 || '' }}
-    runs-on: ${{ matrix.runner }}
+    runs-on: ${{ matrix.arch.runner }}
     steps:
       - name: Clean up disk space
         run: |
@@ -188,7 +188,7 @@ jobs:
 
       - name: Prepare env
         run: |
-          platform=${{ matrix.platform }}
+          platform=${{ matrix.arch.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
       
       - name: Extract Docker metadata
@@ -217,7 +217,7 @@ jobs:
           file: ./Dockerfile.${{ matrix.type }}
           build-args: |
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
-          platforms: ${{ matrix.platform }}
+          platforms: ${{ matrix.arch.platform }}
           tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
