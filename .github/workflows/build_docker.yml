@@ -144,7 +144,7 @@ jobs:
           tags: |
             type=semver,prefix=base.,pattern={{version}}
             type=semver,prefix=base.,pattern={{major}}.{{minor}}
-            type=raw,prefix=base.${{ matrix.major_version }}.,value=edge,enable={{is_default_branch}}
+            type=raw,prefix=base.,value=edge,suffix=.${{ matrix.major_version }},enable={{is_default_branch}}
             type=raw,prefix=base.,value=edge,enable=${{ github.ref_name == github.event.repository.default_branch && matrix.major_version == 13 }}
             type=raw,prefix=base.,value=latest,enable=${{ github.event_name == 'release' && matrix.major_version == 13 }}
 
@@ -226,7 +226,7 @@ jobs:
           file: ./Dockerfile.${{ matrix.type }}
           build-args: |
             CI_DOCKER_VERSION=${{ steps.meta.outputs.version || github.sha }}
-            CI_DOCKER_BASE_TAG=${{ steps.meta.outputs.version || format('{0}.{1}', matrix.major_version, 'edge') }}
+            CI_DOCKER_BASE_TAG=${{ steps.meta.outputs.version || format('{0}.{1}', 'edge', matrix.major_version) }}
           platforms: ${{ matrix.arch.platform }}
           tags: ${{ env.REGISTRY }}/${{ env.REGISTRY_IMAGE }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -284,11 +284,11 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=semver,prefix={{ matrix.type }}.,pattern={{version}}
-            type=semver,prefix={{ matrix.type }}.,pattern={{major}}.{{minor}}
-            type=raw,prefix={{ matrix.type }}.${{ matrix.major_version }}.,value=edge,enable={{is_default_branch}}
-            type=raw,prefix={{ matrix.type }}.,value=edge,enable=${{ github.ref_name == github.event.repository.default_branch && matrix.major_version == 13 }}
-            type=raw,prefix={{ matrix.type }}.,value=latest,enable=${{ github.event_name == 'release' && matrix.major_version == 13 }}
+            type=semver,prefix=${{ matrix.type }}.,pattern={{version}}
+            type=semver,prefix=${{ matrix.type }}.,pattern={{major}}.{{minor}}
+            type=raw,prefix=${{ matrix.type }}.,value=edge,suffix=.${{ matrix.major_version }},enable={{is_default_branch}}
+            type=raw,prefix=${{ matrix.type }}.,value=edge,enable=${{ github.ref_name == github.event.repository.default_branch && matrix.major_version == 13 }}
+            type=raw,prefix=${{ matrix.type }}.,value=latest,enable=${{ github.event_name == 'release' && matrix.major_version == 13 }}
             type=raw,value=edge,enable=${{ github.ref_name == 'main' && matrix.type == 'static' && matrix.major_version == 13 }}
             type=raw,value=latest,enable=${{ github.event_name == 'release' && matrix.type == 'static' && matrix.major_version == 13 }}
 
